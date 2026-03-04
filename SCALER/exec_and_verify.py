@@ -537,8 +537,10 @@ def sandboxfusion_run(base_url: str,
         return {"ok": False,**data}
 
     # 4) 标准化成功/失败
-    
-    exit_code = run_result.get("return_code", -1)
+    if run_result:
+        exit_code = run_result.get("return_code", -1)
+    else:
+        exit_code = -1
     ok = bool(data.get("ok", exit_code == 0))
     result = {
         "ok": ok,

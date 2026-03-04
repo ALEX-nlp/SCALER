@@ -5,28 +5,28 @@ set -euo pipefail
 SANDBOX_URL="http://localhost:8080/run_code"
 # Loading Args
 MAX_ROWS=-1
-LOAD_DIR="../SCALER_data/CodeContest"
+LOAD_DIR="/inspire/hdd/global_user/xucaijun-253108120121/Dataset/hf_datasets/code_contest"
 LOAD_TYPE="parquet"
 FILE_GLOB="train-*.parquet"
 GENERATOR_FILE_GLOB="SCALER_with_generator_after_filter.jsonl"
 # Save Args
-SAVE_DIR="../SCALER_data/train"
-FILTER_PROBLEM_SAVE_NAME="SCALER_after_filter.jsonl"
-FILTER_PROBLEM_META_NAME="SCALER_after_filter.json"
-GENERATOR_SAVE_NAME="SCALER_with_generator_after_filter.jsonl"
-GENERATOR_META_NAME="SCALER_with_generator_after_filter.json"
+SAVE_DIR="/inspire/hdd/global_user/xucaijun-253108120121/Code/FORGE_THIRD"
+FILTER_PROBLEM_SAVE_NAME="after_filter.jsonl"
+FILTER_PROBLEM_META_NAME="after_filter.json"
+GENERATOR_SAVE_NAME="test_SCALER_small_with_generator_after_filter.jsonl"
+GENERATOR_META_NAME="test_SCALER_small_with_generator_after_filter.json"
 
 
 TRAIN_SAVE_NAME="SCALER.json"
-TRAIN_META_NAME="SCALER_meta.json"
+TRAIN_META_NAME="SCALER_small_meta.json"
 
 
 
 # API Args
 # MODEL="gpt-5-mini-2025-08-07"
-MODEL="glm-4.6"
+MODEL="glm-4.7"
 TEMPERATURE=0.6
-N_PROCESSES=20
+N_PROCESSES=5
 
 
 # Verify group logic problem
@@ -45,16 +45,16 @@ BATCH_SIZE=512
 DIFFERENT_OUTPUT_LIMIT=10
 MAX_OUTPUT_RATE=0.3
 
-python api_filter_problem_for_environment.py \
- --load_type ${LOAD_TYPE} \
- --load_dir ${LOAD_DIR} \
- --file_glob ${FILE_GLOB} \
- --max_rows ${MAX_ROWS} \
- --save_dir ${SAVE_DIR} \
- --save_name ${FILTER_PROBLEM_SAVE_NAME} \
- --save_meta_name ${FILTER_PROBLEM_META_NAME} \
- --model ${MODEL}\
- --batch_size ${BATCH_SIZE}
+# python api_filter_problem_for_environment.py \
+#  --load_type ${LOAD_TYPE} \
+#  --load_dir ${LOAD_DIR} \
+#  --file_glob ${FILE_GLOB} \
+#  --max_rows ${MAX_ROWS} \
+#  --save_dir ${SAVE_DIR} \
+#  --save_name ${FILTER_PROBLEM_SAVE_NAME} \
+#  --save_meta_name ${FILTER_PROBLEM_META_NAME} \
+#  --model ${MODEL}\
+#  --batch_size ${BATCH_SIZE}
 
 
  python api_generate_generator_for_environment.py \
@@ -77,17 +77,17 @@ python api_filter_problem_for_environment.py \
 
 
 
- python set_max_difficulty_and_process_train_data.py \
- --load_type json \
- --load_dir ${SAVE_DIR} \
- --file_glob ${GENERATOR_FILE_GLOB} \
- --max_rows ${MAX_ROWS} \
- --save_dir ${SAVE_DIR} \
- --save_name ${TRAIN_SAVE_NAME} \
- --save_meta_name ${TRAIN_META_NAME} \
- --model ${MODEL}\
- --max_prompt_length ${MAX_PROMPT_LENGTH} \
- --sandbox_url ${SANDBOX_URL} \
- --batch_size ${BATCH_SIZE} \
- --n_processes ${N_PROCESSES} 
+#  python set_max_difficulty_and_process_train_data.py \
+#  --load_type json \
+#  --load_dir ${SAVE_DIR} \
+#  --file_glob ${GENERATOR_FILE_GLOB} \
+#  --max_rows ${MAX_ROWS} \
+#  --save_dir ${SAVE_DIR} \
+#  --save_name ${TRAIN_SAVE_NAME} \
+#  --save_meta_name ${TRAIN_META_NAME} \
+#  --model ${MODEL}\
+#  --max_prompt_length ${MAX_PROMPT_LENGTH} \
+#  --sandbox_url ${SANDBOX_URL} \
+#  --batch_size ${BATCH_SIZE} \
+#  --n_processes ${N_PROCESSES} 
 

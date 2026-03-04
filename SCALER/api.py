@@ -10,7 +10,7 @@ from tqdm import tqdm
 from logger import setup_logger
 from zai import ZhipuAiClient
 MODEL="glm-4.6"
-client = ZhipuAiClient(api_key="")
+client = ZhipuAiClient(api_key="5869a081a5f34959bf0dc1ed9e91adcb.fo7caPMQmhYUu5k8")
 
 
 # BASE_URL="https://api.openai.com/v1"

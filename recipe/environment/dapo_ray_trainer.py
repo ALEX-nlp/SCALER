@@ -180,10 +180,12 @@ class RayDAPOTrainer(RayPPOTrainer):
         
             
         for epoch in range(self.config.trainer.total_epochs):
-            problems = self.generate_one_batch_problems(num_problems=self.config.data.num_environment_per_step,
-                                             batch_size=self.config.data.train_batch_size,
-                                             train_configs=self.train_configs,
-                                             start_idx = start_idx)
+            with marked_timer("generating_problem", timing_raw):
+                problems = self.generate_one_batch_problems(num_problems=self.config.data.num_environment_per_step,
+                                                batch_size=self.config.data.train_batch_size,
+                                                train_configs=self.train_configs,
+                                                start_idx = start_idx)
+                
             
             if self.config.trainer.get("enable_windows_sample",False):
                 # show_environment_name = self.windows_environment
@@ -332,8 +334,8 @@ class RayDAPOTrainer(RayPPOTrainer):
                             for distance, vals in dist_dict.items():
                                 prompt_name2metric_avg_len[problem_name][distance] = (np.average(vals),len(vals))
                         
-
-                        problem_name2metric_list=self.update_train_configs(prompt_name2metric_avg_len,self.global_steps)
+                        with marked_timer("update_train_config", timing_raw):
+                            problem_name2metric_list=self.update_train_configs(prompt_name2metric_avg_len,self.global_steps)
                         
                         
                         for problem_name, metric_list in problem_name2metric_list.items():
@@ -514,7 +516,9 @@ class RayDAPOTrainer(RayPPOTrainer):
             
         with open(self.config.data.setting_filename, 'r') as file:
             self.train_configs = json.load(file,object_hook=DifficultyControl.json_object_hook)
-            
+        
+        for problem_name,train_config in list(self.train_configs.items()):
+            train_config['params']['difficulty'].history_len = int(self.config.data.get('history_len',10))
 
         self.val_dataset = dataset_cls(
             data_files=self.config.data.val_files,

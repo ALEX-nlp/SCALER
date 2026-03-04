@@ -179,9 +179,10 @@ def main():
 
     #     left_problems = next_attempt_problems
     #     next_attempt_problems = []
+        
     #     logger.info(f"End of Attempt {attempt}: accumulated={len(output_problems)} | remaining={len(left_problems)}")
-
-    # logger.info(f"Done. total_completed={len(output_problems)} | total_input={len(examples)}")
+    save_output_jsonl(examples, save_dir_path=save_dir_path,  logger=logger, save_name="TEST.jsonl", meta_name="TEST.json")
+    logger.info(f"Done. total_completed={len(output_problems)} | total_input={len(examples)}")
 
 if __name__ == "__main__":
     main()

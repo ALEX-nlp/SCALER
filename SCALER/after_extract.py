@@ -605,6 +605,7 @@ def verify_and_exec_generator_for_environment_combined(
 
                     if error_cnt:
                         todo_flag = False
+                        example['fail_reason']="breadth_test"
                         if logger and debug:
                             logger.error("Error in Breadth Test.")
 
@@ -654,6 +655,7 @@ def verify_and_exec_generator_for_environment_combined(
                         )
                     ):
                         todo_flag = False
+                        example['fail_reason']="deep_test"
                         if logger and debug:
                             logger.error("Error in Deep Test.")
 
@@ -671,6 +673,7 @@ def verify_and_exec_generator_for_environment_combined(
                     )
                     if not success_flag:
                         todo_flag = False
+                        example['fail_reason']="min_test"
                         if logger and debug:
                             logger.error("Error in Pressure Test in min.")
 

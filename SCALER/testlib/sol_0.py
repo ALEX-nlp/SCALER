@@ -1,15 +1,10 @@
-n, k = map(int,input().split())
-l = list(map(int,input().split()))
-a = 0
-for i in range(len(l)):
-    c = list(str(l[i]))
-    s = 0
-    for j in range(len(c)):
-        if c[j] == "7" or c[j] == "4":
-            s += 1
-    if s <= k:
-        a += 1
-print(a)
-            
-    
-    
+s, v1, v2, t1, t2 = list(map(int, input().split()))
+a = 2*t1 + s*v1 
+b = 2*t2 + s*v2
+if a > b:
+    print("Second")
+elif a < b:
+    print("First")
+else:
+    print("Friendship")
+

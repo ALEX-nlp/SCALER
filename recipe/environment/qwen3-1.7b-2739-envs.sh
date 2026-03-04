@@ -14,7 +14,7 @@ with_instruction=True
 
 windows_continous_zero_correct_limit=5
 windows_continous_max_distance_limit=5
-
+history_len=10
 
 
 
@@ -33,7 +33,7 @@ sandboxfusion_url="http://localhost:8080/run_code"
 
 entropy_coeff=0
 
-exp_name=${exp_name:-"windows-10-large-img-W-${enable_weighted_sample}-Instruction-ne-${num_environment_per_step}-model-${model_name}-lr-${lr}-bsz-${train_prompt_bsz}-n_resp-${n_resp_per_prompt}-mini-${train_prompt_mini_bsz}"}
+exp_name=${exp_name:-"test-len-${history_len}-zero-${windows_continous_zero_correct_limit}-sat-${windows_continous_max_distance_limit}-W-${enable_weighted_sample}-Instruction-ne-${num_environment_per_step}-model-${model_name}-lr-${lr}-bsz-${train_prompt_bsz}-n_resp-${n_resp_per_prompt}-mini-${train_prompt_mini_bsz}"}
 # exp_name=${exp_name:-"None-test-data-True-select-False-batch-size-192-64-64-1-7-0-7-replay-0-entropy_coeff-0-dataset-think-DeepMath-103K-model-Qwen2.5-7B"}
 adv_estimator=grpo
 
@@ -62,8 +62,8 @@ filter_groups_metric=acc
 # WORKING_DIR=${WORKING_DIR:-"${PWD}"}
 # RUNTIME_ENV=${RUNTIME_ENV:-"${WORKING_DIR}/verl/trainer/runtime_env.yaml"}
 # Paths
-RAY_DATA_HOME=${RAY_DATA_HOME:-"/inspire/hdd/global_user/xucaijun-253108120121/SCALER"}
-MODEL_PATH=${MODEL_PATH:-"/inspire/hdd/global_user/xucaijun-253108120121/Model/Qwen/${model_name}"}
+RAY_DATA_HOME=${RAY_DATA_HOME:-"./SCALER"}
+MODEL_PATH=${MODEL_PATH:-"./Model/Qwen/${model_name}"}
 CKPTS_DIR=${CKPTS_DIR:-"${RAY_DATA_HOME}/ckpts/${project_name}/${exp_name}"}
 TRAIN_FILE=${TRAIN_FILE:-"${RAY_DATA_HOME}/SCALER-data/train/SCALER-2739.json"}
 TEST_FILE=${TEST_FILE:-["${RAY_DATA_HOME}/SCALER-data/test/bbeh_data.parquet","${RAY_DATA_HOME}/SCALER-data/test/think_MATH-500_MATH-500-processed.parquet","${RAY_DATA_HOME}/SCALER-data/test/think_amc23_amc23_test.parquet","${RAY_DATA_HOME}/SCALER-data/test/think_aime24_aime24_test.parquet","${RAY_DATA_HOME}/SCALER-data/test/MMLU-Pro-Valid.parquet","${RAY_DATA_HOME}/SCALER-data/test/GPQA-Diamond-Test.parquet"]}
@@ -110,6 +110,7 @@ PYTHONUNBUFFERED=1 python3 -m recipe.environment.main_dapo \
     +data.num_environment_per_step=${num_environment_per_step} \
     +data.with_instruction=${with_instruction} \
     +data.sandboxfusion_url="${sandboxfusion_url}" \
+    +data.history_len="${history_len}" \
     data.return_raw_chat=True \
     actor_rollout_ref.rollout.n=${n_resp_per_prompt} \
     algorithm.adv_estimator=${adv_estimator} \
